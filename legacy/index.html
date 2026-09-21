@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Jeffrey Choguen — développeur full-stack (Cameroun). Bientôt disponible.">
+    <title>Jeffrey Choguen — Bientôt disponible</title>
+    <link rel="preconnect" href="https://api.fontshare.com" crossorigin>
+    <link rel="preconnect" href="https://fonts.cdnfonts.com" crossorigin>
+    <link href="https://api.fontshare.com/v2/css?f[]=satoshi@300,400,500,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.cdnfonts.com/css/godber-2" rel="stylesheet">
+    <style>
+        :root {
+            --ink: #0c0c0d;
+            --panel: #141416;
+            --white: #ffffff;
+            --white-soft: rgba(255, 255, 255, 0.82);
+            --muted: rgba(255, 255, 255, 0.55);
+            --muted2: rgba(255, 255, 255, 0.38);
+            --accent: #e8c97a;
+            --frame-radius: clamp(18px, 3vw, 36px);
+            --pad-x: clamp(1rem, 4vw, 2.75rem);
+            --pad-y: clamp(1rem, 3vw, 2rem);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            font-size: 16px;
+        }
+
+        body {
+            font-family: 'Satoshi', system-ui, -apple-system, sans-serif;
+            font-weight: 300;
+            background: var(--panel);
+            color: var(--white);
+            min-height: 100vh;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .noise {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            opacity: 0.035;
+            z-index: 50;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+        }
+
+        .shell {
+            min-height: 100vh;
+            padding: clamp(10px, 2vw, 28px);
+            display: flex;
+            align-items: stretch;
+            justify-content: center;
+        }
+
+        .frame {
+            position: relative;
+            flex: 1;
+            max-width: 1320px;
+            margin: 0 auto;
+            min-height: calc(100vh - clamp(20px, 4vw, 56px));
+            border-radius: var(--frame-radius);
+            overflow: hidden;
+            background: var(--ink) url('assets/coming-soon-hero.png') center center;
+            box-shadow:
+                0 24px 80px rgba(0, 0, 0, 0.55),
+                inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+            display: flex;
+            flex-direction: column;
+        }
+
+        .frame__scrim {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background:
+                linear-gradient(180deg, rgba(0, 0, 0, 0.45) 0%, transparent 28%, transparent 62%, rgba(0, 0, 0, 0.72) 100%),
+                radial-gradient(ellipse 70% 55% at 50% 45%, transparent 0%, rgba(0, 0, 0, 0.35) 100%);
+        }
+
+        .frame__glass-edge {
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            pointer-events: none;
+            box-shadow:
+                inset 2px 2px 0 -1px rgba(255, 255, 255, 0.22),
+                inset 0 0 4px 1px rgba(255, 255, 255, 0.08);
+            z-index: 2;
+        }
+
+        .topbar {
+            position: relative;
+            z-index: 3;
+            display: grid;
+            grid-template-columns: 1fr auto 1fr;
+            align-items: center;
+            gap: 0.75rem;
+            padding: var(--pad-y) var(--pad-x) 0;
+        }
+
+        .icon-btn {
+            position: relative;
+            width: 44px;
+            height: 44px;
+            border: none;
+            border-radius: 9999px;
+            background: transparent;
+            color: var(--white);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .icon-btn::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 9999px;
+            box-shadow:
+                inset 2px 2px 0 -2px rgba(255, 255, 255, 0.55),
+                inset 0 0 3px 1px rgba(255, 255, 255, 0.35);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .icon-btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 9999px;
+            backdrop-filter: blur(0);
+            -webkit-backdrop-filter: blur(0);
+            filter: url(#btn-glass);
+            -webkit-filter: url(#btn-glass);
+            isolation: isolate;
+            z-index: -1;
+        }
+
+        .icon-btn svg {
+            position: relative;
+            z-index: 1;
+        }
+
+        .icon-btn:focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        .mark {
+            justify-self: center;
+            width: 36px;
+            height: 36px;
+            color: var(--white);
+            opacity: 0.95;
+            filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.45));
+        }
+
+        .lang {
+            justify-self: end;
+            display: flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--muted);
+        }
+
+        .lang button {
+            background: none;
+            border: none;
+            color: inherit;
+            cursor: pointer;
+            padding: 0.25rem 0.15rem;
+            font: inherit;
+        }
+
+        .lang button[aria-pressed="true"] {
+            color: var(--white);
+        }
+
+        .lang span {
+            opacity: 0.45;
+            user-select: none;
+        }
+
+        .hero {
+            position: relative;
+            z-index: 3;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: clamp(1.5rem, 5vw, 3rem) var(--pad-x);
+            gap: clamp(0.75rem, 2vw, 1.5rem);
+        }
+
+        .hero__title {
+            font-family: 'Godber', 'Satoshi', ui-sans-serif, sans-serif;
+            font-weight: 400;
+            font-size: clamp(2.5rem, 11vw, 6.75rem);
+            line-height: 0.95;
+            letter-spacing: 0.02em;
+            text-transform: uppercase;
+            color: var(--white);
+            text-shadow:
+                0 2px 24px rgba(0, 0, 0, 0.55),
+                0 0 1px rgba(0, 0, 0, 0.8);
+            max-width: 18ch;
+        }
+
+        .hero__subtitle {
+            font-size: clamp(0.95rem, 2.2vw, 1.2rem);
+            font-weight: 400;
+            color: var(--white-soft);
+            max-width: 28rem;
+            line-height: 1.5;
+            text-shadow: 0 1px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .countdown {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: flex-end;
+            justify-content: center;
+            gap: clamp(0.35rem, 2vw, 1.25rem);
+            margin-top: 0.5rem;
+        }
+
+        .countdown__unit {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 3.5rem;
+        }
+
+        .countdown__nums {
+            font-size: clamp(1.75rem, 6vw, 3rem);
+            font-weight: 300;
+            letter-spacing: 0.04em;
+            font-variant-numeric: tabular-nums;
+            line-height: 1;
+            color: var(--white);
+            text-shadow: 0 2px 16px rgba(0, 0, 0, 0.45);
+        }
+
+        .countdown__sep {
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            font-weight: 300;
+            color: var(--muted2);
+            padding-bottom: 0.15em;
+            user-select: none;
+        }
+
+        .countdown__label {
+            margin-top: 0.5rem;
+            font-size: 0.65rem;
+            font-weight: 500;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--muted2);
+        }
+
+        .hero__tagline {
+            font-size: 0.85rem;
+            color: var(--muted);
+            font-style: italic;
+            margin-top: 0.25rem;
+        }
+
+        .bottom {
+            position: relative;
+            z-index: 3;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+            padding: 0 var(--pad-x) var(--pad-y);
+            align-items: end;
+        }
+
+        @media (min-width: 768px) {
+            .bottom {
+                grid-template-columns: 1fr auto 1fr;
+                align-items: end;
+            }
+
+            .bottom__social {
+                justify-self: start;
+            }
+
+            .bottom__credit {
+                justify-self: center;
+                text-align: center;
+            }
+
+            .bottom__news {
+                justify-self: end;
+            }
+        }
+
+        .social {
+            display: flex;
+            gap: 0.65rem;
+        }
+
+        .social a {
+            position: relative;
+            width: 42px;
+            height: 42px;
+            border-radius: 9999px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            text-decoration: none;
+        }
+
+        .social a::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 9999px;
+            box-shadow:
+                inset 2px 2px 0 -2px rgba(255, 255, 255, 0.55),
+                inset 0 0 3px 1px rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.09);
+        }
+
+        .social a::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 9999px;
+            filter: url(#btn-glass);
+            -webkit-filter: url(#btn-glass);
+            isolation: isolate;
+            z-index: -1;
+        }
+
+        .social svg {
+            position: relative;
+            z-index: 1;
+            width: 18px;
+            height: 18px;
+        }
+
+        .credit {
+            font-size: 0.7rem;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--muted2);
+        }
+
+        .news {
+            width: 100%;
+            max-width: 320px;
+            justify-self: stretch;
+        }
+
+        @media (min-width: 768px) {
+            .news {
+                justify-self: end;
+            }
+        }
+
+        .news__label {
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: var(--muted);
+            margin-bottom: 0.45rem;
+        }
+
+        .news__row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .news__row input {
+            flex: 1;
+            min-width: 0;
+            background: transparent;
+            border: none;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.35);
+            padding: 0.45rem 0;
+            color: var(--white);
+            font: inherit;
+            font-size: 0.9rem;
+        }
+
+        .news__row input::placeholder {
+            color: var(--muted2);
+        }
+
+        .news__row input:focus {
+            outline: none;
+            border-bottom-color: var(--accent);
+        }
+
+        .news__submit {
+            position: relative;
+            width: 44px;
+            height: 44px;
+            flex-shrink: 0;
+            border: none;
+            border-radius: 9999px;
+            background: transparent;
+            color: var(--white);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .news__submit::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 9999px;
+            box-shadow:
+                inset 2px 2px 0 -2px rgba(255, 255, 255, 0.55),
+                inset 0 0 3px 1px rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .news__submit::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 9999px;
+            filter: url(#btn-glass);
+            -webkit-filter: url(#btn-glass);
+            isolation: isolate;
+            z-index: -1;
+        }
+
+        .news__submit svg {
+            position: relative;
+            z-index: 1;
+        }
+
+        .news__hint {
+            font-size: 0.68rem;
+            color: var(--muted2);
+            margin-top: 0.35rem;
+        }
+
+        .news__hint a {
+            color: var(--white-soft);
+        }
+
+        .news__promo {
+            margin-top: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 0.5rem;
+            width: 100%;
+        }
+
+        .news__promo-label {
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            color: var(--muted);
+            max-width: 16rem;
+            line-height: 1.35;
+        }
+
+        .liquid-toggle-wrap {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 0.15rem;
+        }
+
+        .arrow {
+            font-family: 'Satoshi', system-ui, sans-serif;
+            font-size: 0.75rem;
+            font-weight: 500;
+            font-style: italic;
+            position: absolute;
+            opacity: 0.65;
+            color: var(--white-soft);
+            pointer-events: none;
+            white-space: nowrap;
+        }
+
+        .arrow.arrow--main {
+            right: calc(100% + 0.5rem);
+            top: 50%;
+            translate: 0 -50%;
+            rotate: -8deg;
+            transition: opacity 0.26s ease-out;
+        }
+
+        .arrow.arrow--main svg {
+            display: block;
+            width: 22px;
+            height: auto;
+            margin-top: 0.35rem;
+            margin-left: 0.25rem;
+            scale: -1 1;
+            color: var(--accent);
+        }
+
+        @media (max-width: 420px) {
+            .arrow.arrow--main {
+                display: none;
+            }
+        }
+
+        .toast-region {
+            position: fixed;
+            z-index: 200;
+            left: 50%;
+            bottom: 1.25rem;
+            translate: -50% 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            pointer-events: none;
+            width: min(92vw, 380px);
+        }
+
+        .toast {
+            pointer-events: none;
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border-radius: 14px;
+            font-size: 0.875rem;
+            font-weight: 500;
+            line-height: 1.45;
+            color: var(--ink);
+            background: rgba(255, 255, 255, 0.94);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            animation: toast-in 0.35s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+        }
+
+        .toast--info {
+            background: rgba(232, 201, 122, 0.95);
+            color: #1a1508;
+        }
+
+        @keyframes toast-in {
+            from {
+                opacity: 0;
+                transform: translateY(12px) scale(0.98);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        @keyframes toast-out {
+            to {
+                opacity: 0;
+                transform: translateY(8px) scale(0.98);
+            }
+        }
+
+        .toast.is-out {
+            animation: toast-out 0.28s ease forwards;
+        }
+
+        /* —— Liquid toggle (goo / knockout) —— */
+        :root {
+            --lt-transition: 0.2s;
+            --lt-ease: ease-out;
+        }
+
+        [data-bounce='true']:has(:is(.liquid-toggle:active, .liquid-toggle[data-pressed='true'])) {
+            --lt-transition: 0.55s;
+            --lt-ease: cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        [data-pressed='true'] .liquid__track {
+            min-height: 22px;
+        }
+
+        .indicator--masked .mask {
+            translate: calc((var(--complete, 0) / 100) * (100cqi - 60cqi - (0 * var(--border)))) -50%;
+            transition-property: height, width, margin;
+            transition-duration: var(--lt-transition);
+            transition-timing-function: var(--lt-ease);
+            will-change: height, width, margin;
+        }
+
+        .liquid-toggle .wrapper {
+            clip-path: inset(0 0 0 0 round 100px);
+            filter: blur(6px);
+            transition: filter var(--lt-transition) var(--lt-ease);
+        }
+
+        [aria-pressed='true']:not([data-active='true']) .liquid__track {
+            left: calc(var(--border) * 6);
+        }
+
+        .liquid__track {
+            left: 0;
+            transition-property: height, width, filter, left;
+            transition-duration: var(--lt-transition);
+            transition-timing-function: var(--lt-ease);
+            translate: calc((var(--complete, 0) / 100) * (100cqi - 100% - (6 * var(--border)))) -50%;
+        }
+
+        [data-mapped='false'] .liquid__track {
+            transition-property: height, width, filter, left, background;
+            transition-duration: var(--lt-transition), var(--lt-transition), var(--lt-transition), var(--lt-transition), calc(var(--lt-transition) * 0.5);
+            transition-timing-function: var(--lt-ease), var(--lt-ease), var(--lt-ease), var(--lt-ease), ease-out;
+        }
+
+        .indicator__liquid {
+            translate: calc((var(--complete, 0) / 100) * (100cqi - 100% - (2 * var(--border)))) -50%;
+            transition-property: scale;
+            transition-duration: var(--lt-transition);
+            transition-timing-function: var(--lt-ease);
+        }
+
+        .indicator__liquid :is(.cover, .shadow) {
+            transition: opacity var(--lt-transition) var(--lt-ease);
+        }
+
+        [data-active='true'] .indicator--masked .mask,
+        .liquid-toggle:active .indicator--masked .mask {
+            height: calc((100% - (2 * var(--border))) * (1.65 - (var(--delta, 0) * 0.025)));
+            width: calc((60% - (2 * var(--border))) * (1.65 + (var(--delta, 0) * 0.025)));
+            margin-left: calc((60% - (2 * var(--border))) * ((0.65 + (var(--delta, 0) * 0.025)) * -0.5));
+        }
+
+        [data-active='true'] .indicator__liquid,
+        .liquid-toggle:active .indicator__liquid {
+            scale: calc(1.65 + (var(--delta, 0) * 0.025)) calc(1.65 - (var(--delta, 0) * 0.025));
+        }
+
+        [data-active='true'] .liquid-toggle .wrapper,
+        .liquid-toggle:active .wrapper {
+            filter: blur(0);
+        }
+
+        [data-active='true'] .indicator__liquid .shadow,
+        .liquid-toggle:active .indicator__liquid .shadow {
+            opacity: 1;
+        }
+
+        [data-active='true'] .indicator__liquid .cover,
+        .liquid-toggle:active .indicator__liquid .cover {
+            opacity: 0;
+        }
+
+        [data-active='true'] .indicator__liquid .liquid__track,
+        .liquid-toggle:active .indicator__liquid .liquid__track {
+            left: calc(var(--border) * 3);
+            height: calc((var(--height) * 1px) - (6 * var(--border)));
+        }
+
+        [data-mapped='false'] .liquid-toggle {
+            --progress: round(down, var(--complete, 0), 85);
+            --checked: hsl(
+                var(--hue, 144),
+                calc((8 + (var(--progress) / 85 * 92)) * 1%),
+                calc((81 - (var(--progress) / 85 * (81 - 43))) * 1%)
+            );
+        }
+
+        [data-mapped='false'] .indicator,
+        [data-mapped='false'] .indicator--masked {
+            transition: background calc(var(--lt-transition) * 0.5) ease-out;
+        }
+
+        [data-mapped='false'] .liquid__shadow {
+            transition: box-shadow calc(var(--lt-transition) * 0.5) ease-out;
+        }
+
+        .liquid-toggle {
+            --unchecked: hsl(218, 8%, 81%);
+            --checked: hsl(
+                var(--hue, 144),
+                calc((8 + (var(--complete, 0) / 100 * 92)) * 1%),
+                calc((81 - (var(--complete, 0) / 100 * (81 - 43))) * 1%)
+            );
+            --border: 4px;
+            --width: 96;
+            --height: 40;
+            height: calc(var(--height) * 1px);
+            width: calc(var(--width) * 1px);
+            border-radius: 100px;
+            border: 0;
+            padding: 0;
+            cursor: pointer;
+            position: relative;
+            overflow: visible;
+            container-type: inline-size;
+            background: transparent;
+            transition: outline var(--lt-transition) var(--lt-ease);
+            outline-offset: 2px;
+            flex-shrink: 0;
+        }
+
+        .liquid-toggle:focus-visible {
+            outline: 3px solid color-mix(in srgb, var(--checked), transparent 35%);
+        }
+
+        .liquid-toggle:active {
+            outline: none;
+        }
+
+        .liquid-toggle[data-active='true']:focus-visible {
+            outline: 3px solid transparent;
+        }
+
+        .liquid-toggle .indicator {
+            border-radius: 100px;
+            pointer-events: none;
+            height: 100%;
+            width: 100%;
+            background: var(--checked);
+            position: absolute;
+            top: 50%;
+            scale: 1;
+            left: 50%;
+            translate: -50% -50%;
+        }
+
+        .liquid-toggle .knockout {
+            height: calc(var(--height) * 1px);
+            width: calc(var(--width) * 1px);
+            border-radius: 100px;
+            filter: url(#remove-black);
+            position: absolute;
+            inset: 0;
+            will-change: filter, scale;
+            transform: translate3d(0, 0, 0);
+        }
+
+        .liquid-toggle .indicator--masked {
+            background: var(--checked);
+            z-index: 12;
+            height: 100%;
+            width: 100%;
+            translate: -50% -50%;
+            container-type: inline-size;
+        }
+
+        .liquid-toggle .indicator--masked .mask {
+            position: absolute;
+            height: calc(100% - (2 * var(--border)));
+            width: calc(60% - (2 * var(--border)));
+            top: 50%;
+            background: #000;
+            left: var(--border);
+            border-radius: 100px;
+        }
+
+        .liquid-toggle .wrapper {
+            position: absolute;
+            inset: 0;
+            border-radius: 100px;
+        }
+
+        .liquid-toggle .liquids {
+            position: absolute;
+            inset: 0;
+            transform: translate3d(0, 0, 0);
+            border-radius: 100px;
+            overflow: hidden;
+            filter: url(#goo);
+        }
+
+        .liquid-toggle .liquid__shadow {
+            position: absolute;
+            inset: 0;
+            box-shadow:
+                inset 0 0 3px 4px var(--checked),
+                inset calc(((var(--complete, 0) / 100) * 8px) + -4px) 0 3px 4px var(--checked);
+            border-radius: 100px;
+        }
+
+        .liquid-toggle .liquid__track {
+            height: calc((var(--height) * 1px) - (0 * var(--border)));
+            width: calc((var(--width) * 1px) - (0 * var(--border)));
+            background: var(--checked);
+            border-radius: 100px;
+            position: absolute;
+            top: 50%;
+        }
+
+        .liquid-toggle .indicator__liquid {
+            position: absolute;
+            height: calc(100% - (2 * var(--border)));
+            width: calc(60% - (2 * var(--border)));
+            container-type: inline-size;
+            top: 50%;
+            background: transparent;
+            left: var(--border);
+            border-radius: 100px;
+        }
+
+        .liquid-toggle .indicator__liquid .shadow {
+            opacity: 0;
+            position: absolute;
+            inset: 0;
+            border-radius: 100px;
+            box-shadow:
+                1px -1px 2px hsl(0 0% 100% / 0.5) inset,
+                0 -1px 2px hsl(0 0% 100% / 0.5) inset,
+                -1px -1px 2px hsl(0 0% 100% / 0.5) inset,
+                1px 1px 2px hsl(0 0% 30% / 0.5) inset,
+                -8px 4px 10px -6px hsl(0 0% 30% / 0.25) inset,
+                -1px 1px 6px hsl(0 0% 30% / 0.25) inset,
+                -1px -1px 8px hsl(0 0% 60% / 0.15),
+                1px 1px 2px hsl(0 0% 30% / 0.15),
+                2px 2px 6px hsl(0 0% 30% / 0.15),
+                -2px -1px 2px hsl(0 0% 100% / 0.25) inset,
+                3px 6px 16px -6px hsl(0 0% 30% / 0.5);
+            z-index: 20;
+        }
+
+        .liquid-toggle .indicator__liquid .cover {
+            position: absolute;
+            inset: 0;
+            background: #fff;
+            border-radius: 100px;
+        }
+
+        .drawer {
+            position: fixed;
+            inset: 0;
+            z-index: 100;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.25s ease;
+        }
+
+        .drawer.is-open {
+            pointer-events: auto;
+            opacity: 1;
+        }
+
+        .drawer__backdrop {
+            position: absolute;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px);
+        }
+
+        .drawer__panel {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: min(88vw, 300px);
+            background: rgba(18, 18, 20, 0.92);
+            border-right: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 1.5rem;
+            transform: translateX(-100%);
+            transition: transform 0.28s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .drawer.is-open .drawer__panel {
+            transform: translateX(0);
+        }
+
+        .drawer__title {
+            font-size: 0.7rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            color: var(--muted2);
+            margin-bottom: 1.25rem;
+        }
+
+        .drawer__link {
+            display: block;
+            color: var(--white);
+            text-decoration: none;
+            padding: 0.65rem 0;
+            font-weight: 500;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .drawer__link:hover {
+            color: var(--accent);
+        }
+
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .drawer,
+            .drawer__panel {
+                transition: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="noise" aria-hidden="true"></div>
+
+    <div class="shell">
+        <div class="frame">
+            <div class="frame__scrim" aria-hidden="true"></div>
+            <div class="frame__glass-edge" aria-hidden="true"></div>
+
+            <header class="topbar">
+                <button type="button" class="icon-btn" id="menu-btn" aria-expanded="false" aria-controls="nav-drawer" aria-label="Menu">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                        <path d="M4 7h16M4 12h16M4 17h16" stroke-linecap="round"/>
+                    </svg>
+                </button>
+
+                <div class="mark" aria-hidden="true" title="Jeffrey Choguen">
+                    <svg viewBox="0 0 48 48" width="100%" height="100%" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M24 8L40 36H8L24 8Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>
+                        <path d="M14 28h20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+                    </svg>
+                </div>
+
+                <div class="lang" role="group" aria-label="Langue">
+                    <button type="button" id="lang-fr" aria-pressed="true">FR</button>
+                    <span>/</span>
+                    <button type="button" id="lang-en" aria-pressed="false">EN</button>
+                </div>
+            </header>
+
+            <main class="hero">
+                <h1 class="hero__title" id="i-title">BIENTÔT</h1>
+                <p class="hero__subtitle" id="i-sub">Quelque chose de très abouti arrive.</p>
+
+                <div class="countdown" id="countdown" aria-live="polite">
+                    <div class="countdown__unit">
+                        <span class="countdown__nums" id="cd-d">00</span>
+                        <span class="countdown__label" id="i-lb-d">Jours</span>
+                    </div>
+                    <span class="countdown__sep" aria-hidden="true">:</span>
+                    <div class="countdown__unit">
+                        <span class="countdown__nums" id="cd-h">00</span>
+                        <span class="countdown__label" id="i-lb-h">Heures</span>
+                    </div>
+                    <span class="countdown__sep" aria-hidden="true">:</span>
+                    <div class="countdown__unit">
+                        <span class="countdown__nums" id="cd-m">00</span>
+                        <span class="countdown__label" id="i-lb-m">Minutes</span>
+                    </div>
+                    <span class="countdown__sep" aria-hidden="true">:</span>
+                    <div class="countdown__unit">
+                        <span class="countdown__nums" id="cd-s">00</span>
+                        <span class="countdown__label" id="i-lb-s">Secondes</span>
+                    </div>
+                </div>
+
+                <p class="hero__tagline" id="i-tag">… aussi soigné que cette scène.</p>
+            </main>
+
+            <footer class="bottom">
+                <div class="bottom__social social">
+                    <a href="https://www.linkedin.com/in/jeffrey-choguen-8222a1255" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.07 2.07 0 1 1 0-4.14 2.07 2.07 0 0 1 0 4.14zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+                    </a>
+                    <a href="https://www.facebook.com/talla.jeffrey.9/" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+                    </a>
+                    <a href="https://github.com/Jeffrey-04" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+                    </a>
+                </div>
+
+                <p class="bottom__credit credit" id="i-credit">© 2026 Jeffrey Choguen · Cameroun</p>
+
+                <div class="bottom__news news">
+                    <p class="news__label" id="i-news-label">Inscrivez-vous à la newsletter</p>
+                    <form id="news-form" novalidate>
+                        <div class="news__row">
+                            <label class="sr-only" for="news-email" id="i-news-sr">Adresse e-mail</label>
+                            <input type="email" id="news-email" name="email" autocomplete="email" placeholder="votre@email.com" />
+                            <button type="submit" class="news__submit" aria-label="Envoyer">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" aria-hidden="true">
+                                    <path d="M4 4h16v16H4z" opacity="0" />
+                                    <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <div class="news__promo">
+                            <span class="news__promo-label" id="i-promo-label">Recevoir promos, actus et outils dev</span>
+                            <div class="liquid-toggle-wrap">
+                                <div class="arrow arrow--main" aria-hidden="true">
+                                    <span id="i-promo-hint">Glisser ou cliquer</span>
+                                    <svg viewBox="0 0 77 139" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                                        <path fill-rule="evenodd" clip-rule="evenodd" d="M63.9153 0.37541C62.6706 1.85361 63.1403 31.3942 64.7373 54.4353C65.5593 65.9325 67.0389 77.8285 68.8708 87.6362C71.0784 99.4618 71.3837 102.113 70.7496 103.99C70.1155 105.914 68.6594 106.384 61.9191 106.876C51.2566 107.674 49.3543 108.003 32.6561 112.038C25.9157 113.681 18.8936 115.112 18.7057 114.924C18.6352 114.877 19.1754 113.939 19.8799 112.859C21.3126 110.63 21.5944 109.692 21.1951 108.401C20.6784 106.642 18.5882 105.656 16.8973 106.36C16.451 106.548 14.807 107.604 13.257 108.683C10.5797 110.56 9.0531 111.405 4.54388 113.47C-0.435059 115.745 -1.37449 119.734 1.98395 124.404C3.48702 126.515 4.9901 127.829 8.65384 130.246C12.8578 132.991 16.2397 134.61 20.561 135.971C22.4868 136.581 24.9293 137.426 25.9627 137.872C27.137 138.364 27.9355 138.575 28.0764 138.435C28.9219 137.59 24.718 133.249 18.3534 128.51C15.8404 126.633 13.4684 124.826 13.0691 124.521L12.3646 123.934L13.304 123.77C19.8565 122.667 28.1468 120.861 35.8736 118.819C45.1269 116.379 51.2566 115.018 55.8128 114.385C64.2441 113.211 68.0018 112.578 69.4579 112.132C72.558 111.17 74.977 108.824 75.8929 105.867C76.8559 102.77 76.5505 99.1568 74.2959 87.2842C71.5951 73.0888 70.1155 61.1928 68.5185 41.1785C67.5086 28.5551 66.3813 11.6614 66.1465 5.04465C65.9821 0.750832 65.7707 0 64.7608 0C64.4555 0 64.0797 0.164239 63.9153 0.37541Z" fill="currentColor"/>
+                                    </svg>
+                                </div>
+                                <button type="button" id="promo-toggle" class="liquid-toggle" aria-label="Recevoir promos et outils" aria-pressed="false" style="--complete: 0; --hue: 144; --delta: 0">
+                                    <div class="knockout">
+                                        <div class="indicator indicator--masked">
+                                            <div class="mask"></div>
+                                        </div>
+                                    </div>
+                                    <div class="indicator__liquid">
+                                        <div class="shadow"></div>
+                                        <div class="wrapper">
+                                            <div class="liquids">
+                                                <div class="liquid__shadow"></div>
+                                                <div class="liquid__track"></div>
+                                            </div>
+                                        </div>
+                                        <div class="cover"></div>
+                                    </div>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                    <p class="news__hint" id="i-news-hint">Backend à brancher — en attendant : <a href="https://www.linkedin.com/in/jeffrey-choguen-8222a1255" target="_blank" rel="noopener noreferrer">LinkedIn</a>.</p>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <div class="toast-region" id="toast-region" aria-live="polite" aria-relevant="additions text"></div>
+
+    <div class="drawer" id="nav-drawer" hidden>
+        <div class="drawer__backdrop" id="drawer-backdrop"></div>
+        <nav class="drawer__panel" aria-label="Navigation">
+            <p class="drawer__title" id="i-nav-title">Navigation</p>
+            <a class="drawer__link" href="https://www.linkedin.com/in/jeffrey-choguen-8222a1255" target="_blank" rel="noopener noreferrer" id="i-nav-li">Profil LinkedIn</a>
+            <a class="drawer__link" href="https://www.facebook.com/talla.jeffrey.9/" target="_blank" rel="noopener noreferrer" id="i-nav-fb">Facebook</a>
+            <a class="drawer__link" href="https://github.com/Jeffrey-04" target="_blank" rel="noopener noreferrer" id="i-nav-gh">GitHub</a>
+        </nav>
+    </div>
+
+    <svg xmlns="http://www.w3.org/2000/svg" width="0" height="0" style="position:absolute;overflow:hidden" aria-hidden="true">
+        <defs>
+            <filter id="btn-glass" x="-20%" y="-20%" width="140%" height="140%" primitiveUnits="userSpaceOnUse">
+                <feTurbulence type="fractalNoise" baseFrequency="0.02 0.02" numOctaves="2" seed="92" result="noise" />
+                <feGaussianBlur in="noise" stdDeviation="0.8" result="blur" />
+                <feDisplacementMap in="SourceGraphic" in2="blur" scale="6" xChannelSelector="R" yChannelSelector="G" />
+            </filter>
+            <filter id="goo">
+                <feGaussianBlur in="SourceGraphic" stdDeviation="13" result="blur" />
+                <feColorMatrix in="blur" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 19 -9" result="goo" />
+                <feComposite in="SourceGraphic" in2="goo" operator="atop" />
+            </filter>
+            <filter id="knockout" color-interpolation-filters="sRGB">
+                <feColorMatrix result="knocked" type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  -1 -1 -1 1 0" />
+                <feComponentTransfer>
+                    <feFuncR type="linear" slope="3" intercept="-1" />
+                    <feFuncG type="linear" slope="3" intercept="-1" />
+                    <feFuncB type="linear" slope="3" intercept="-1" />
+                </feComponentTransfer>
+                <feComponentTransfer>
+                    <feFuncR type="table" tableValues="0 0 0 0 0 1 1 1 1 1" />
+                    <feFuncG type="table" tableValues="0 0 0 0 0 1 1 1 1 1" />
+                    <feFuncB type="table" tableValues="0 0 0 0 0 1 1 1 1 1" />
+                </feComponentTransfer>
+            </filter>
+            <filter id="remove-black" color-interpolation-filters="sRGB">
+                <feColorMatrix type="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  -255 -255 -255 0 1" result="black-pixels" />
+                <feMorphology in="black-pixels" operator="dilate" radius="0.5" result="smoothed" />
+                <feComposite in="SourceGraphic" in2="smoothed" operator="out" />
+            </filter>
+        </defs>
+    </svg>
+
+    <script>
+        (function () {
+            /* Modifiez cette date (ISO 8601) pour le lancement */
+            var DEADLINE = new Date('2026-09-01T00:00:00');
+
+            var STR = {
+                fr: {
+                    title: 'BIENTÔT',
+                    sub: 'Quelque chose de très abouti arrive.',
+                    lbD: 'Jours', lbH: 'Heures', lbM: 'Minutes', lbS: 'Secondes',
+                    tag: '… aussi soigné que cette scène.',
+                    credit: '© 2026 Jeffrey Choguen · Cameroun',
+                    newsLabel: 'Inscrivez-vous à la newsletter',
+                    newsSr: 'Adresse e-mail',
+                    newsPh: 'votre@email.com',
+                    newsHint: 'Backend à brancher — en attendant : ',
+                    newsHintLink: 'LinkedIn',
+                    promoLabel: 'Recevoir promos, actus et outils dev',
+                    promoHint: 'Glisser ou cliquer',
+                    navTitle: 'Navigation',
+                    navLi: 'Profil LinkedIn',
+                    navFb: 'Facebook',
+                    navGh: 'GitHub',
+                    toastErrEmail: 'Merci d’indiquer une adresse e-mail valide.',
+                    toastOkPromo: 'Merci ! Newsletter + promos & outils : enregistré.',
+                    toastOkBase: 'Merci ! Inscription à la newsletter enregistrée.'
+                },
+                en: {
+                    title: 'COMING SOON',
+                    sub: 'Something worth waiting for is on the way.',
+                    lbD: 'Days', lbH: 'Hours', lbM: 'Minutes', lbS: 'Seconds',
+                    tag: '… as polished as this moment.',
+                    credit: '© 2026 Jeffrey Choguen · Cameroon',
+                    newsLabel: 'Subscribe to our newsletter',
+                    newsSr: 'Email address',
+                    newsPh: 'example@mail.com',
+                    newsHint: 'Wire up a backend — for now: ',
+                    newsHintLink: 'LinkedIn',
+                    promoLabel: 'Get promos, news & dev tools',
+                    promoHint: 'Drag or tap',
+                    navTitle: 'Navigation',
+                    navLi: 'LinkedIn profile',
+                    navFb: 'Facebook',
+                    navGh: 'GitHub',
+                    toastErrEmail: 'Please enter a valid email address.',
+                    toastOkPromo: 'Thanks! Newsletter + promos & tools — saved.',
+                    toastOkBase: 'Thanks! You’re on the newsletter list.'
+                }
+            };
+
+            function showToast(message, variant) {
+                var region = document.getElementById('toast-region');
+                if (!region) return;
+                var el = document.createElement('div');
+                el.className = 'toast' + (variant === 'info' ? ' toast--info' : '');
+                el.setAttribute('role', 'status');
+                el.textContent = message;
+                region.appendChild(el);
+                var removeMs = 4200;
+                setTimeout(function () {
+                    el.classList.add('is-out');
+                    setTimeout(function () { el.remove(); }, 320);
+                }, removeMs);
+            }
+
+            function pad(n) { return String(n).padStart(2, '0'); }
+
+            function tick() {
+                var now = Date.now();
+                var t = DEADLINE.getTime() - now;
+                var d = document.getElementById('cd-d');
+                var h = document.getElementById('cd-h');
+                var m = document.getElementById('cd-m');
+                var s = document.getElementById('cd-s');
+                if (t <= 0) {
+                    d.textContent = h.textContent = m.textContent = s.textContent = '00';
+                    return;
+                }
+                var sec = Math.floor(t / 1000);
+                var days = Math.floor(sec / 86400);
+                sec -= days * 86400;
+                var hours = Math.floor(sec / 3600);
+                sec -= hours * 3600;
+                var mins = Math.floor(sec / 60);
+                sec -= mins * 60;
+                d.textContent = pad(Math.min(days, 99));
+                h.textContent = pad(hours);
+                m.textContent = pad(mins);
+                s.textContent = pad(sec);
+            }
+
+            function applyLang(lang) {
+                var o = STR[lang] || STR.fr;
+                document.documentElement.lang = lang === 'en' ? 'en' : 'fr';
+                document.getElementById('i-title').textContent = o.title;
+                document.getElementById('i-sub').textContent = o.sub;
+                document.getElementById('i-lb-d').textContent = o.lbD;
+                document.getElementById('i-lb-h').textContent = o.lbH;
+                document.getElementById('i-lb-m').textContent = o.lbM;
+                document.getElementById('i-lb-s').textContent = o.lbS;
+                document.getElementById('i-tag').textContent = o.tag;
+                document.getElementById('i-credit').textContent = o.credit;
+                document.getElementById('i-news-label').textContent = o.newsLabel;
+                document.getElementById('i-news-sr').textContent = o.newsSr;
+                document.getElementById('news-email').placeholder = o.newsPh;
+                var hint = document.getElementById('i-news-hint');
+                hint.innerHTML = o.newsHint + '<a href="https://www.linkedin.com/in/jeffrey-choguen-8222a1255" target="_blank" rel="noopener noreferrer">' + o.newsHintLink + '</a>.';
+                document.getElementById('i-nav-title').textContent = o.navTitle;
+                document.getElementById('i-nav-li').textContent = o.navLi;
+                document.getElementById('i-nav-fb').textContent = o.navFb;
+                document.getElementById('i-nav-gh').textContent = o.navGh;
+                document.getElementById('i-promo-label').textContent = o.promoLabel;
+                document.getElementById('i-promo-hint').textContent = o.promoHint;
+                document.getElementById('promo-toggle').setAttribute('aria-label', o.promoLabel);
+                document.getElementById('lang-fr').setAttribute('aria-pressed', lang === 'fr' ? 'true' : 'false');
+                document.getElementById('lang-en').setAttribute('aria-pressed', lang === 'en' ? 'true' : 'false');
+                try { localStorage.setItem('jc-lang', lang); } catch (e) {}
+            }
+
+            var saved = null;
+            try { saved = localStorage.getItem('jc-lang'); } catch (e) {}
+            if (saved === 'en' || saved === 'fr') applyLang(saved);
+
+            document.getElementById('lang-fr').addEventListener('click', function () { applyLang('fr'); });
+            document.getElementById('lang-en').addEventListener('click', function () { applyLang('en'); });
+
+            tick();
+            setInterval(tick, 1000);
+
+            var drawer = document.getElementById('nav-drawer');
+            var menuBtn = document.getElementById('menu-btn');
+            var backdrop = document.getElementById('drawer-backdrop');
+
+            function openDrawer() {
+                drawer.hidden = false;
+                requestAnimationFrame(function () { drawer.classList.add('is-open'); });
+                menuBtn.setAttribute('aria-expanded', 'true');
+            }
+            function closeDrawer() {
+                drawer.classList.remove('is-open');
+                menuBtn.setAttribute('aria-expanded', 'false');
+                setTimeout(function () { drawer.hidden = true; }, 280);
+            }
+
+            menuBtn.addEventListener('click', function () {
+                if (drawer.classList.contains('is-open')) closeDrawer();
+                else openDrawer();
+            });
+            backdrop.addEventListener('click', closeDrawer);
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && drawer.classList.contains('is-open')) closeDrawer();
+            });
+
+            document.getElementById('news-form').addEventListener('submit', function (e) {
+                e.preventDefault();
+                var input = document.getElementById('news-email');
+                var lang = document.documentElement.lang === 'en' ? 'en' : 'fr';
+                var o = STR[lang] || STR.fr;
+                if (!input.checkValidity() || !input.value.trim()) {
+                    input.focus();
+                    showToast(o.toastErrEmail, 'info');
+                    return;
+                }
+                var promoOn = document.getElementById('promo-toggle').getAttribute('aria-pressed') === 'true';
+                input.value = '';
+                showToast(promoOn ? o.toastOkPromo : o.toastOkBase, 'default');
+            });
+        })();
+    </script>
+    <script type="module">
+        import gsap from 'https://esm.sh/gsap@3.13.0';
+        import Draggable from 'https://esm.sh/gsap@3.13.0/Draggable';
+
+        gsap.registerPlugin(Draggable);
+
+        const root = document.documentElement;
+        root.dataset.mapped = 'false';
+        root.dataset.bounce = 'true';
+        root.dataset.bubble = 'true';
+        root.dataset.delta = 'true';
+        root.dataset.debug = 'false';
+
+        const toggle = document.getElementById('promo-toggle');
+        const arrowMain = document.querySelector('.arrow--main');
+        if (!toggle) {
+            console.warn('promo-toggle introuvable');
+        } else {
+
+        gsap.set(toggle, { '--complete': 0, '--hue': 144, '--delta': 0 });
+
+        const toggleState = async () => {
+            toggle.dataset.pressed = 'true';
+            if (root.dataset.bubble !== 'false') toggle.dataset.active = 'true';
+            await Promise.allSettled(
+                root.dataset.bounce !== 'true'
+                    ? toggle.getAnimations({ subtree: true }).map((a) => a.finished)
+                    : []
+            );
+            const pressed = toggle.matches('[aria-pressed=true]');
+            gsap
+                .timeline({
+                    onComplete: () => {
+                        gsap.delayedCall(0.05, () => {
+                            toggle.dataset.active = 'false';
+                            toggle.dataset.pressed = 'false';
+                            toggle.setAttribute('aria-pressed', (!pressed).toString());
+                        });
+                    },
+                })
+                .to(toggle, {
+                    '--complete': pressed ? 0 : 100,
+                    duration: 0.12,
+                    delay: root.dataset.bounce === 'true' && root.dataset.bubble !== 'false' ? 0.18 : 0,
+                });
+        };
+
+        const proxy = document.createElement('div');
+        Draggable.create(proxy, {
+            allowContextMenu: true,
+            handle: toggle,
+            onDragStart: function () {
+                const toggleBounds = toggle.getBoundingClientRect();
+                const pressed = toggle.matches('[aria-pressed=true]');
+                const bounds = pressed
+                    ? toggleBounds.left - this.pointerX
+                    : toggleBounds.left + toggleBounds.width - this.pointerX;
+                this.dragBounds = bounds;
+                toggle.dataset.active = 'true';
+            },
+            onDrag: function () {
+                const pressed = toggle.matches('[aria-pressed=true]');
+                const dragged = this.x - this.startX;
+                const complete = gsap.utils.clamp(
+                    0,
+                    100,
+                    pressed
+                        ? gsap.utils.mapRange(this.dragBounds, 0, 0, 100, dragged)
+                        : gsap.utils.mapRange(0, this.dragBounds, 0, 100, dragged)
+                );
+                this.complete = complete;
+                gsap.set(toggle, {
+                    '--complete': complete,
+                    '--delta': Math.min(Math.abs(this.deltaX), 12),
+                });
+            },
+            onDragEnd: function () {
+                gsap.fromTo(
+                    toggle,
+                    { '--complete': this.complete },
+                    {
+                        '--complete': this.complete >= 50 ? 100 : 0,
+                        duration: 0.15,
+                        onComplete: () => {
+                            gsap.delayedCall(0.05, () => {
+                                toggle.dataset.active = 'false';
+                                toggle.setAttribute('aria-pressed', String(this.complete >= 50));
+                            });
+                        },
+                    }
+                );
+            },
+            onPress: function () {
+                this.__pressTime = Date.now();
+                if (arrowMain) arrowMain.style.opacity = '0';
+                if ('ontouchstart' in window && navigator.maxTouchPoints > 0) {
+                    toggle.dataset.active = 'true';
+                }
+            },
+            onRelease: function () {
+                this.__releaseTime = Date.now();
+                gsap.set(toggle, { '--delta': 0 });
+                if (
+                    'ontouchstart' in window &&
+                    navigator.maxTouchPoints > 0 &&
+                    ((this.startX !== undefined &&
+                        this.endX !== undefined &&
+                        Math.abs(this.endX - this.startX) < 4) ||
+                        this.endX === undefined)
+                ) {
+                    toggle.dataset.active = 'false';
+                }
+                if (this.__releaseTime - this.__pressTime <= 150) {
+                    toggleState();
+                }
+            },
+        });
+
+        toggle.addEventListener('keydown', (e) => {
+            if (arrowMain) arrowMain.style.opacity = '0';
+            if (e.key === 'Enter') toggleState();
+            if (e.key === ' ') e.preventDefault();
+        });
+
+        toggle.addEventListener('keyup', (e) => {
+            if (e.key === ' ') toggleState();
+        });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+# =============================================================================
+# Dépendances et builds
+# =============================================================================
+node_modules/
+.next/
+out/
+*.tsbuildinfo
+# =============================================================================
+next-env.d.ts
+# Secrets
+# =============================================================================
+# Tous les fichiers d'environnement, pas seulement *.local : un simple .env
+# contenant une clé serait sinon versionné. Seul le modèle est conservé.
+.env
+.env.*
+# =============================================================================
+!.env.example
+# Assets RÉGÉNÉRÉS à chaque `npm run build` (script prebuild)
+# =============================================================================
+# Inutile de les versionner : le build les reproduit à l'identique, et les
+# modèles pèsent ~80 Mo.
+# scripts/copy-pdf-worker.mjs
+public/vendor/pdf.worker.min.mjs
+# scripts/fetch-ocr-assets.mjs
+public/vendor/tessdata/
+# scripts/fetch-ocr-assets.mjs
+public/vendor/tesseract/
+# scripts/fetch-bg-model.mjs
+public/vendor/bg/
+# scripts/optimize-animations.mjs
+public/assets/lottie/
+
+# À l'inverse, public/assets/ (portrait, captures, logo, fumée) EST versionné :
+# ces fichiers viennent de `npm run assets`, absent du prebuild car l'encodage
+# AVIF et WebP animé prend plusieurs minutes. Les sources vivent dans legacy/.
+
+# =============================================================================
+# Système et éditeurs
+# =============================================================================
+.DS_Store
+*.log
+npm-debug.log*
+.vscode/
+.idea/

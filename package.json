@@ -1,0 +1,50 @@
+{
+  "name": "jeffreychoguen",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Site personnel de Jeffrey Choguen — Full Stack Software Engineer",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "assets": "node scripts/optimize-assets.mjs",
+    "logos": "node scripts/generate-logos.mjs",
+    "icons": "node scripts/generate-icons.mjs",
+    "prebuild": "find public -name '.DS_Store' -delete; node scripts/optimize-animations.mjs && node scripts/copy-pdf-worker.mjs && node scripts/fetch-ocr-assets.mjs && node scripts/fetch-bg-model.mjs",
+    "pdf-worker": "node scripts/copy-pdf-worker.mjs",
+    "ocr-assets": "node scripts/fetch-ocr-assets.mjs",
+    "serve": "node scripts/serve-out.mjs",
+    "postbuild": "find out -name '.DS_Store' -delete",
+    "animations": "node scripts/optimize-animations.mjs",
+    "typecheck": "tsc --noEmit",
+    "verify": "node scripts/verify-build.mjs"
+  },
+  "dependencies": {
+    "@imgly/background-removal": "^1.7.0",
+    "docx": "^9.7.1",
+    "gray-matter": "^4.0.3",
+    "lenis": "^1.3.26",
+    "lottie-web": "^5.13.0",
+    "next": "^16.3.4",
+    "next-mdx-remote": "^6.0.0",
+    "pdf-lib": "^1.17.1",
+    "pdfjs-dist": "^6.3.289",
+    "qrcode": "^1.5.4",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "reading-time": "^1.5.0",
+    "tesseract.js": "^7.0.0"
+  },
+  "devDependencies": {
+    "@phosphor-icons/core": "^2.1.1",
+    "@tailwindcss/postcss": "^4.3.3",
+    "@types/node": "^22.10.2",
+    "@types/qrcode": "^1.5.6",
+    "@types/react": "^19.0.2",
+    "@types/react-dom": "^19.0.2",
+    "sharp": "^0.34.5",
+    "simple-icons": "^16.30.0",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5.7.2"
+  }
+}

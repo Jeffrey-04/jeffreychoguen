@@ -1,0 +1,339 @@
+@import "tailwindcss";
+/* Feuille requise par Lenis : hauteur du document, conteneurs marqués
+   data-lenis-prevent, état stoppé. Importée depuis le paquet pour suivre
+   ses évolutions plutôt que d'en recopier les règles. */
+@import "lenis/dist/lenis.css";
+
+/* ---------------------------------------------------------------
+   Design tokens — valeurs exactes de design.md §2.
+   Thème clair uniquement : le projet Framer ne définit aucun token
+   sombre (design.md §13).
+   --------------------------------------------------------------- */
+@theme {
+  --color-gray-50: #f7f7f8;
+  --color-gray-100: #edeef1;
+  --color-gray-200: #e0e2e6;
+  --color-gray-300: #c9cdd2;
+  --color-gray-400: #94979e;
+  --color-gray-500: #61646b;
+  --color-gray-600: #44454c;
+  --color-gray-700: #24242a;
+  --color-gray-800: #1b1b21;
+  --color-gray-900: #121218;
+  --color-accent-200: #d8f89d;
+  --color-accent-500: #83ca16;
+
+  /* Breakpoints alignés sur le projet Framer (design.md §3.1). */
+  --breakpoint-md: 810px;
+  --breakpoint-lg: 1200px;
+
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 32px;
+
+  /* var(--font-lora) inclut la police de repli aux métriques ajustées
+     générée par next/font, ce qui limite le CLS au chargement (design.md §10). */
+  --font-display: var(--font-lora), Georgia, "Times New Roman", serif;
+  --font-sans: var(--font-instrument), system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+/* ---------------------------------------------------------------
+   Base
+   --------------------------------------------------------------- */
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /*
+   * Défilement doux natif UNIQUEMENT quand Lenis n'a pas pris la main (il pose
+   * la classe .lenis sur <html>). Laisser les deux actifs ferait converger
+   * deux mécanismes vers la même position à chaque frame, d'où des à-coups.
+   * Sans JavaScript, les ancres gardent ainsi un comportement doux.
+   */
+  html:not(.lenis) {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-gray-50);
+    color: var(--color-gray-600);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 24px;
+    letter-spacing: -0.02em;
+    /* Fonctionnalités OpenType actives dans le projet Framer (design.md §2.2). */
+    font-feature-settings: "cv03" 1, "cv04" 1, "cv09" 1, "cv11" 1;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: var(--color-gray-900);
+    letter-spacing: -0.02em;
+  }
+
+  /* Anneau de focus — absent du template, obligatoire ici (design.md §9). */
+  :focus-visible {
+    outline: 2px solid var(--color-gray-900);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background: var(--color-accent-200);
+    color: var(--color-gray-900);
+  }
+}
+
+/* ---------------------------------------------------------------
+   Presets typographiques (design.md §2.2)
+   --------------------------------------------------------------- */
+@layer components {
+  .t-h1 {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 48px;
+    line-height: 48px;
+    letter-spacing: -0.02em;
+    color: var(--color-gray-900);
+  }
+  @media (min-width: 810px) {
+    .t-h1 { font-size: 64px; line-height: 64px; }
+  }
+  @media (min-width: 1200px) {
+    .t-h1 { font-size: 72px; line-height: 72px; }
+  }
+
+  .t-h2 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 40px;
+    letter-spacing: -0.02em;
+    color: var(--color-gray-900);
+  }
+  @media (min-width: 810px) {
+    .t-h2 { font-size: 36px; line-height: 48px; }
+  }
+
+  .t-h3 { font-weight: 600; font-size: 24px; line-height: 32px; letter-spacing: -0.02em; color: var(--color-gray-900); }
+  .t-h4 { font-weight: 500; font-size: 20px; line-height: 30px; letter-spacing: -0.04em; color: var(--color-gray-900); }
+  .t-h5 { font-weight: 500; font-size: 18px; line-height: 28px; letter-spacing: -0.02em; color: var(--color-gray-900); }
+  .t-h6 { font-weight: 500; font-size: 16px; line-height: 24px; letter-spacing: -0.02em; color: var(--color-gray-900); }
+  .t-label { font-weight: 500; font-size: 14px; line-height: 20px; letter-spacing: -0.01em; color: var(--color-gray-900); }
+
+  .t-body-lg { font-size: 18px; line-height: 28px; letter-spacing: -0.02em; color: var(--color-gray-600); }
+  .t-body { font-size: 16px; line-height: 24px; letter-spacing: -0.02em; color: var(--color-gray-600); }
+  .t-body-sm { font-size: 14px; line-height: 20px; letter-spacing: -0.01em; color: var(--color-gray-600); }
+  .t-body-xs { font-size: 12px; line-height: 16px; letter-spacing: -0.02em; color: var(--color-gray-600); }
+
+  /* Méta lisible : gray-500 et non gray-400, qui échoue AA (design.md §9). */
+  .t-meta { font-size: 14px; line-height: 20px; letter-spacing: -0.01em; color: var(--color-gray-500); }
+
+  .balanced { text-wrap: balance; }
+
+  .container-page {
+    width: 100%;
+    max-width: 1200px;
+    margin-inline: auto;
+    padding-inline: 24px;
+  }
+
+  .section-pad { padding-block: 64px; }
+  @media (min-width: 810px) {
+    .section-pad { padding-block: 96px; }
+  }
+}
+
+/* ---------------------------------------------------------------
+   Fond de page : couleur + hachures 145° + grain (design.md §4)
+   Entièrement en CSS — aucune requête réseau, aucun JS.
+   --------------------------------------------------------------- */
+.bg-hatch {
+  background-color: var(--color-gray-50);
+  background-image: repeating-linear-gradient(
+    145deg,
+    var(--color-gray-100) 0 1px,
+    transparent 1px 4px
+  );
+}
+
+.bg-grain::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  /* z-index 0 : la couche de grain reste STRICTEMENT en fond (design.md §4).
+     Le contenu est remonté en z-10 par .content-layer ci-dessous — sans quoi
+     le grain se peindrait par-dessus les images et voilerait les visuels. */
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0.15;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* Tout le contenu du site vit au-dessus des couches de fond. */
+.content-layer {
+  position: relative;
+  z-index: 10;
+}
+
+/*
+ * Marque JC — tête d'antilope dont les initiales forment la joue et la
+ * mâchoire. Employée en MASQUE et non en image : la couleur vient de
+ * currentColor, donc un seul fichier sert sur fond clair comme sur fond
+ * sombre, sans variante blanche à maintenir.
+ */
+.logo-mark {
+  display: inline-block;
+  aspect-ratio: 767 / 1044;
+  background-color: currentColor;
+  -webkit-mask: url("/assets/logo.png") center / contain no-repeat;
+  mask: url("/assets/logo.png") center / contain no-repeat;
+}
+
+/* Texture fumée des cartes sombres (design.md §5.3).
+   Asset d'origine du template : IHneqoBbdHUCED6FYR137ZUxEqI.gif,
+   converti de 2,4 Mo en GIF à ~142 Ko en WebP animé. */
+.card-dark {
+  background-color: var(--color-gray-900);
+  /* Voile dégradé PAR-DESSUS la fumée : ses volutes claires font passer le
+     texte blanc sous le seuil de contraste AA par endroits. Le voile garantit
+     la lisibilité partout sans effacer la texture. */
+  background-image:
+    linear-gradient(
+      180deg,
+      rgba(18, 18, 24, 0.78) 0%,
+      rgba(18, 18, 24, 0.45) 40%,
+      rgba(18, 18, 24, 0.55) 75%,
+      rgba(18, 18, 24, 0.82) 100%
+    ),
+    url("/assets/smoke.webp");
+  background-size: cover, cover;
+  background-position: center, center;
+}
+
+/* Un fond animé reste du mouvement : image fixe si l'utilisateur le demande. */
+@media (prefers-reduced-motion: reduce) {
+  .card-dark {
+    background-image:
+      linear-gradient(
+        180deg,
+        rgba(18, 18, 24, 0.78) 0%,
+        rgba(18, 18, 24, 0.45) 40%,
+        rgba(18, 18, 24, 0.55) 75%,
+        rgba(18, 18, 24, 0.82) 100%
+      ),
+      url("/assets/smoke-still.webp");
+  }
+}
+
+/* ---------------------------------------------------------------
+   Système d'apparition au scroll (components/motion/)
+   --------------------------------------------------------------- */
+:root {
+  /* Entrée : expo-out. La longue décélération finale est ce qui donne la
+     sensation « posée » — davantage que la durée elle-même. */
+  --rv-ease-in: cubic-bezier(0.16, 1, 0.3, 1);
+  /* La sortie s'éteint plus doucement encore que l'entrée n'arrive. */
+  --rv-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --rv-dur-in: 1150ms;
+  /* Presque le double de l'entrée : voir le contenu se défaire est le geste
+     rare, c'est donc lui qu'on laisse durer. */
+  --rv-dur-out: 1700ms;
+}
+
+/*
+ * L'état masqué s'applique inconditionnellement, et c'est un <noscript> qui le
+ * LÈVE lorsque JavaScript est absent (cf. app/[locale]/layout.tsx).
+ *
+ * La logique inverse — masquer seulement sous une classe .js posée par script —
+ * paraissait plus sûre, mais ce script mutait <html> AVANT l'hydratation :
+ * React comparait alors deux className différents et signalait une
+ * désynchronisation. Ici aucun script ne touche au document, donc plus d'écart
+ * possible, et le contenu reste visible sans JavaScript.
+ */
+[data-reveal] {
+  opacity: 0;
+  transform: translate3d(var(--rv-x, 0px), var(--rv-y, 48px), 0) scale(0.985);
+  /* La sortie porte son propre délai, distinct de celui de l'entrée : un
+     groupe qui s'empile doit se désempiler dans l'ordre inverse. Par défaut
+     il vaut 0 et tout se défait ensemble. */
+  transition:
+    opacity var(--rv-dur-out) var(--rv-ease-out) var(--rv-delay-out, 0s),
+    transform var(--rv-dur-out) var(--rv-ease-out) var(--rv-delay-out, 0s);
+}
+
+[data-reveal="in"] {
+  opacity: 1;
+  transform: translate3d(0, 0, 0) scale(1);
+  transition:
+    opacity var(--rv-dur-in) var(--rv-ease-in) var(--rv-delay, 0s),
+    transform var(--rv-dur-in) var(--rv-ease-in) var(--rv-delay, 0s);
+}
+
+/* ---------------------------------------------------------------
+   Navigation flottante (design.md §5.4)
+   --------------------------------------------------------------- */
+
+/*
+ * La pastille descend au lieu d'apparaître.
+ *
+ * Passer du flux à la position fixe déplace l'élément d'un coup : aucune
+ * transition CSS ne peut relier les deux états. On assume donc la coupure et
+ * on la transforme en intention — la barre glisse depuis le haut, ce qui se
+ * lit comme un choix et non comme un saut.
+ */
+@keyframes nav-drop {
+  from { opacity: 0; transform: translateY(-14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-nav-drop {
+  animation: nav-drop 380ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-nav-drop { animation: none; }
+}
+
+/* ---------------------------------------------------------------
+   Marquee (design.md §5.9)
+   --------------------------------------------------------------- */
+@keyframes marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  gap: 64px;
+  animation: marquee 45s linear infinite;
+}
+
+/* Le survol suspend le défilement : laisse le temps de lire un logo. */
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+/* ---------------------------------------------------------------
+   Réduction de mouvement — obligatoire (design.md §7.7)
+   --------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .marquee-track { animation: none; }
+
+  [data-reveal],
+  [data-reveal="in"] {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
