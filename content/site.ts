@@ -10,7 +10,7 @@ export const site = {
   /** Nom complet de l'état civil, exposé uniquement en alternateName. */
   legalName: "Jeffrey Choguen Talla",
   url: "https://jeffreychoguen.cloud",
-  email: "contact@jeffreychoguen.cloud",
+  email: "jeffreychoguen@colisgo.org",
   location: {
     city: "Yaoundé",
     country: { en: "Cameroon", fr: "Cameroun" } as I18nText,

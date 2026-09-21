@@ -89,9 +89,8 @@ directement, sans rechargement.
 
 ### Après la mise en ligne
 
-- [ ] **Envoyer un e-mail de test à contact@jeffreychoguen.cloud.** Cette adresse
-  figure dans le contact, le pied de page, le JSON-LD et `llms.txt`. Le MX pointe
-  vers le serveur web lui-même, sur lequel aucun serveur mail n'a été constaté.
+- [ ] Envoyer un e-mail de test à `jeffreychoguen@colisgo.org` depuis le
+  formulaire de contact, pour vérifier le parcours de bout en bout.
 - [ ] Ouvrir la console sur l'accueil et sur un outil de chaque famille (image,
   PDF, OCR, détourage) : la CSP est en **Report-Only**, elle signale sans
   bloquer. Si rien n'apparaît, retirer `-Report-Only` dans le snippet.
@@ -181,7 +180,6 @@ commentée avec sa source. Aucune métrique sans source : c'est une exigence de
 - [x] CV en PDF, un par langue — `public/cv/CV-Jeffrey-{en,fr}.pdf`
 - [x] Captures de 5 projets sur 7
 - [ ] Captures d'**Andylix** et de **CRESPAC** — voir « Ajouter une capture »
-- [ ] Vérifier que `contact@jeffreychoguen.cloud` reçoit bien le courrier
 - [ ] Définir `NEXT_PUBLIC_CONTACT_ENDPOINT` pour activer le formulaire
 - [ ] Étoffer le profil GitHub, puis passer `showGithub: true` dans `content/site.ts`
 - [ ] Publier le premier article dans `content/writing/`
