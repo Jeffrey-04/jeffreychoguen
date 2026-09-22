@@ -35,6 +35,19 @@ public/assets/lottie/
 # AVIF et WebP animé prend plusieurs minutes. Les sources vivent dans legacy/.
 
 # =============================================================================
+# Référence de design — NON versionnée
+# =============================================================================
+# design/framer-reference/ contient les assets et captures du template Sevora.
+# Les portraits et avatars représentent des personnes réelles et appartiennent
+# au template : les publier dans un dépôt public les redistribue, ce que
+# design.md $8 interdit explicitement.
+#
+# Le dossier reste en local comme référence de cadrage. Sa seule dépendance de
+# build est la texture de fumée, dont la sortie (public/assets/smoke.webp) est
+# déjà versionnée ; `npm run assets` ignore proprement une source absente.
+design/framer-reference/
+
+# =============================================================================
 # Système et éditeurs
 # =============================================================================
 .DS_Store

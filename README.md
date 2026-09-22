@@ -124,7 +124,7 @@ lui-même la validation, le rate limiting et l'anti-spam.
 | `deploy/` | Configuration Nginx de production. |
 | `scripts/` | Préparation des assets et du build. |
 | `legacy/` | **Sources** des assets optimisés (portrait, captures, animations, logo) et ancienne page « bientôt disponible ». |
-| `design/framer-reference/` | Captures du design source. Exclu du build. |
+| `design/framer-reference/` | Captures du design source. Exclu du build **et non versionné** — assets du template sous licence. |
 
 ### Pourquoi les sources vivent dans `legacy/`
 

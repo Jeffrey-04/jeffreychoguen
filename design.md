@@ -10,6 +10,13 @@
 
 ## 1. Références locales
 
+> **Dossier non versionné.** `design/framer-reference/` reste en local et
+> n'est pas poussé : ses portraits et avatars représentent des personnes réelles
+> et appartiennent au template Sevora (cf. §8, Licences). Le publier dans un
+> dépôt public reviendrait à les redistribuer. Un clone frais ne l'aura donc
+> pas ; `npm run assets` ignore proprement une source absente, et les sorties
+> déjà générées sont versionnées dans `public/assets/`.
+
 | Dossier | Contenu |
 |---|---|
 | `design/framer-reference/screens/` | 24 captures des sections/pages du projet Framer (rendu desktop) |

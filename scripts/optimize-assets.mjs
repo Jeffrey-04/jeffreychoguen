@@ -1,3 +1,4 @@
+import { existsSync } from "node:fs";
 /**
  * Optimise les assets source de legacy/assets vers public/assets.
  * design.md §8 : AVIF + WebP, cible < 200 Ko par visuel plein format.
@@ -80,6 +81,12 @@ const jobs = [
 ];
 
 for (const job of jobs) {
+  if (!existsSync(job.src)) {
+    // Sources non versionnées (assets du template Sevora) : absentes d'un
+    // clone frais. La sortie déjà générée reste dans public/assets/.
+    console.log(`${job.src.padEnd(34)} source absente — ignoré`);
+    continue;
+  }
   for (const v of job.variants) {
     // Désaturation : le GIF d'origine est bleuté, alors que la référence
     // (screens/08-features.jpg) montre une fumée monochrome et que la palette
