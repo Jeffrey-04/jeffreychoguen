@@ -4,6 +4,7 @@
 node_modules/
 .next/
 out/
+design/
 *.tsbuildinfo
 # =============================================================================
 next-env.d.ts
