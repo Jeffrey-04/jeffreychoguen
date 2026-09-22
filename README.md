@@ -45,10 +45,36 @@ réutilise.
 
 Nginx sert `out/`. Aucun processus Node ne tourne sur le serveur.
 
+**`/var/www/jeffreychoguen/` est un dossier partagé** : il héberge aussi le site
+de Mundi Complex (dossier `mundi/`). Aucune commande de déploiement ne doit
+toucher à la racine de ce dossier ni utiliser `rsync --delete` dessus — ça
+supprimerait le site d'un client.
+
+Le déploiement suit donc un schéma release + symlink : chaque envoi va dans un
+sous-dossier horodaté neuf, jamais écrit par-dessus l'existant, puis un
+symlink `current` bascule dessus en une seule opération atomique. `mundi/`
+n'est jamais dans le chemin d'aucune de ces commandes.
+
+```text
+/var/www/jeffreychoguen/
+├── mundi/                    ← site de Mundi Complex — jamais touché
+├── releases/
+│   ├── 20260922-1400/        ← anciens envois, conservés pour rollback
+│   └── 20260922-1512/        ← dernier envoi
+└── current -> releases/20260922-1512/   ← symlink lu par Nginx
+```
+
 ### Première mise en production
 
-1. **Installer la configuration Nginx** — elle corrige trois pièges qui ne se
-   voient qu'en production (voir plus bas) :
+1. **Vérifier l'existant sur le serveur** — pour confirmer qu'aucun dossier ne
+   s'appelle déjà `releases` ou `current` :
+
+   ```bash
+   ssh user@serveur "ls -la /var/www/jeffreychoguen/"
+   ```
+
+2. **Installer la configuration Nginx** — elle corrige trois pièges qui ne se
+   voient qu'en production :
 
    ```bash
    scp deploy/nginx.conf deploy/security-headers.conf user@serveur:/tmp/
@@ -60,24 +86,59 @@ Nginx sert `out/`. Aucun processus Node ne tourne sur le serveur.
    sudo nginx -t
    ```
 
-2. **Envoyer le site**
+   `nginx -t` échouera à ce stade si `current` n'existe pas encore — normal,
+   il est créé à l'étape suivante. Ne pas recharger Nginx avant l'étape 4.
+
+3. **Construire et envoyer une première release**
 
    ```bash
    npm run build
-   npm run verify     # 22 contrôles — ne pas envoyer si l'un échoue
-   rsync -a --delete out/ user@serveur:/var/www/jeffreychoguen/
+   npm run verify                      # 22 contrôles — ne pas envoyer si l'un échoue
+
+   REL=$(date +%Y%m%d-%H%M)
+   ssh user@serveur "mkdir -p /var/www/jeffreychoguen/releases/$REL"
+   rsync -a out/ user@serveur:/var/www/jeffreychoguen/releases/$REL/
    ```
 
-   Le premier envoi fait ~131 Mo, dont 83 Mo d'assets d'outils. Les suivants ne
-   transfèrent que ce qui a changé.
+   Pas de `--delete` : le dossier de la release est neuf, il n'y a rien à
+   effacer dedans. Le premier envoi fait ~131 Mo, dont 83 Mo d'assets d'outils.
 
-3. **Recharger** — `sudo systemctl reload nginx`
+4. **Basculer le symlink et recharger**
 
-Pour les mises à jour suivantes, l'étape 2 suffit : Nginx sert les fichiers
-directement, sans rechargement.
+   ```bash
+   ssh user@serveur "ln -sfn /var/www/jeffreychoguen/releases/$REL /var/www/jeffreychoguen/current"
+   sudo nginx -t && sudo systemctl reload nginx
+   ```
+
+   `ln -sfn` remplace le symlink en une seule opération : à aucun moment le
+   dossier ciblé par Nginx n'est incomplet ou absent.
+
+### Mises à jour suivantes
+
+Répéter les étapes 3 et 4. Chaque envoi crée sa propre release ; `current`
+bascule dessus seulement si elle est complète. Un déploiement raté laisse donc
+le site précédent en ligne, intact.
+
+**Revenir en arrière** en cas de problème :
+
+```bash
+ssh user@serveur "ln -sfn /var/www/jeffreychoguen/releases/<release-précédente> /var/www/jeffreychoguen/current && sudo systemctl reload nginx"
+```
+
+**Faire le ménage** de temps en temps — ne supprime que dans `releases/`,
+jamais la racine :
+
+```bash
+ssh user@serveur "cd /var/www/jeffreychoguen/releases && ls -t | tail -n +4 | xargs -r rm -rf"
+```
+
+Cette commande garde les 3 releases les plus récentes et supprime le reste —
+uniquement à l'intérieur de `releases/`.
 
 ### Ce que la configuration Nginx corrige
 
+- **Le conflit avec Mundi Complex.** `root` pointe sur `current`, jamais sur la
+  racine partagée — voir plus haut.
 - **Les types MIME des outils.** Un worker PDF.js servi en
   `application/octet-stream` est refusé par le navigateur : PDF→JPG, PDF→Word
   et l'OCR fonctionneraient en local et tomberaient en production.
@@ -94,6 +155,7 @@ directement, sans rechargement.
 - [ ] Ouvrir la console sur l'accueil et sur un outil de chaque famille (image,
   PDF, OCR, détourage) : la CSP est en **Report-Only**, elle signale sans
   bloquer. Si rien n'apparaît, retirer `-Report-Only` dans le snippet.
+- [ ] Vérifier que mundicomplex.com répond toujours normalement.
 - [ ] Soumettre `/sitemap.xml` à Google Search Console et Bing Webmaster Tools.
 
 ## Variables d'environnement
