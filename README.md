@@ -252,3 +252,4 @@ commentée avec sa source. Aucune métrique sans source : c'est une exigence de
 - `design.md` — contrat de design : tokens, composants, animations
 - `tools.md` — catalogue et positionnement de la suite d'outils
 - `tools-plan.md` — plan d'exécution des outils et état d'avancement
+- `reload.md` — commandes exactes à lancer sur le serveur après chaque mise à jour
